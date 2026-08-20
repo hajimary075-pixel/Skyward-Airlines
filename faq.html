@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;max-width:800px;">
+  <h1>Frequently Asked Questions</h1>
+  <input id="faq-search" placeholder="Search FAQs..." style="width:100%;margin-bottom:20px;padding:12px;" aria-label="Search FAQs">
+  <div id="list"></div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  await App.initLayout("/faq");
+  const { results } = await App.api("/faqs");
+
+  function render(items) {
+    document.getElementById("list").innerHTML = items.map((f, i) => `
+      <div class="accordion-item" id="item-${i}">
+        <button class="accordion-trigger" aria-expanded="false" data-idx="${i}">
+          <span>${f.question} <span style="color:var(--muted);font-weight:400;">(${f.category})</span></span>
+          <span aria-hidden="true">+</span>
+        </button>
+        <div class="accordion-panel"><p>${f.answer}</p></div>
+      </div>`).join("") || `<p>No FAQs matched your search.</p>`;
+
+    document.querySelectorAll(".accordion-trigger").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".accordion-item");
+        const open = item.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open);
+      })
+    );
+  }
+  render(results);
+
+  document.getElementById("faq-search").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    render(results.filter((f) => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q) || f.category.toLowerCase().includes(q)));
+  });
+})();
+</script>
+</body>
+</html>

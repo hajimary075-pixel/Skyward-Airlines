@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Fleet</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;">
+  <h1>Our Fleet</h1>
+  <p class="section-sub">Verified specifications only — updated by our operations team.</p>
+  <div class="grid grid-3" id="list"></div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  await App.initLayout("/fleet");
+  const { results } = await App.api("/fleet");
+  document.getElementById("list").innerHTML = results.map((a) => `
+    <div class="card">
+      <img src="/img/fleet/${a.id}.jpg" alt="${a.name}" style="background:#ddd;" onerror="this.style.display='none'">
+      <div class="card-body">
+        <h3>${a.name}</h3>
+        <p><strong>Model:</strong> ${a.model}</p>
+        <p><strong>Capacity:</strong> ${a.capacity} seats</p>
+        <p><strong>Range:</strong> ${a.range_km.toLocaleString()} km</p>
+        <p><strong>Cruise speed:</strong> ${a.cruise_speed_kmh} km/h</p>
+        <p>${a.description}</p>
+      </div>
+    </div>`).join("");
+})();
+</script>
+</body>
+</html>

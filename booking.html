@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complete Your Booking</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;max-width:820px;">
+  <div class="steps">
+    <span class="step">1. Search</span>
+    <span class="step">2. Select Flight</span>
+    <span class="step active">3. Passenger &amp; Contact</span>
+    <span class="step">4. Review &amp; Confirm</span>
+    <span class="step">5. Ticket &amp; Payment</span>
+  </div>
+
+  <div id="flight-summary" class="summary-box" style="margin-bottom:24px;"></div>
+
+  <form id="booking-form">
+    <div class="field" style="max-width:220px;margin-bottom:20px;">
+      <label for="travel-date">Travel Date</label>
+      <input type="date" id="travel-date" required>
+    </div>
+
+    <div id="passenger-fields"></div>
+
+    <h2 style="font-size:1.2rem;">Contact Details</h2>
+    <div class="field-row" style="margin-bottom:20px;">
+      <div class="field"><label for="c-email">Email</label><input type="email" id="c-email" required></div>
+      <div class="field"><label for="c-phone">Phone</label><input type="tel" id="c-phone" required></div>
+    </div>
+
+    <h2 style="font-size:1.2rem;">Extras</h2>
+    <div class="field-row" style="margin-bottom:20px;">
+      <div class="field">
+        <label for="extra-bag"><input type="checkbox" id="extra-bag"> Add extra checked bag</label>
+      </div>
+      <div class="field">
+        <label for="extra-assist"><input type="checkbox" id="extra-assist"> Request special assistance</label>
+      </div>
+    </div>
+
+    <div id="form-error" class="alert alert-error" style="display:none;"></div>
+
+    <h2 style="font-size:1.2rem;">Fare Breakdown</h2>
+    <div class="summary-box" id="fare-breakdown">Calculating fare...</div>
+
+    <button type="submit" style="margin-top:16px;">Review &amp; Confirm Booking</button>
+  </form>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.initLayout(null, "Hello, I need help with my flight booking.");
+  const flightId = App.qs("flightId");
+  const passengerCount = Math.max(1, Number(App.qs("passengers") || 1));
+  const prefDate = App.qs("date");
+
+  const dateInput = document.getElementById("travel-date");
+  const todayStr = new Date().toISOString().slice(0, 10);
+  dateInput.min = todayStr;
+  dateInput.value = prefDate || todayStr;
+
+  let flight;
+  try {
+    flight = await App.api("/flights/" + encodeURIComponent(flightId));
+  } catch (e) {
+    document.getElementById("flight-summary").innerHTML = `<div class="alert alert-error">Flight not found. Please search again.</div>`;
+    return;
+  }
+
+  document.getElementById("flight-summary").innerHTML = `
+    <div class="summary-row"><span>Flight</span><span>${flight.flight_number} (${flight.aircraft_name})</span></div>
+    <div class="summary-row"><span>Route</span><span>${flight.origin} &rarr; ${flight.destination}</span></div>
+    <div class="summary-row"><span>Departure</span><span>${flight.departure_time}</span></div>
+    <div class="summary-row"><span>Arrival</span><span>${flight.arrival_time}</span></div>
+    <div class="summary-row"><span>Seats available</span><span>${flight.seats_available}</span></div>
+  `;
+
+  const pf = document.getElementById("passenger-fields");
+  for (let i = 0; i < passengerCount; i++) {
+    pf.insertAdjacentHTML(
+      "beforeend",
+      `<div class="passenger-block">
+        <h2 style="font-size:1.1rem;margin-top:0;">Passenger ${i + 1}</h2>
+        <div class="field-row">
+          <div class="field"><label>Type</label>
+            <select data-p="${i}" data-f="type" class="pax-type">
+              <option value="adult">Adult</option>
+              <option value="child">Child (2-11)</option>
+              <option value="infant">Infant (under 2)</option>
+            </select>
+          </div>
+          <div class="field"><label>Title</label>
+            <select data-p="${i}" data-f="title" required>
+              <option value="">Select</option>
+              <option>Mr</option><option>Mrs</option><option>Ms</option><option>Dr</option><option>Master</option>
+            </select>
+          </div>
+          <div class="field"><label>First Name</label><input data-p="${i}" data-f="firstName" required></div>
+          <div class="field"><label>Surname</label><input data-p="${i}" data-f="surname" required></div>
+        </div>
+      </div>`
+    );
+  }
+
+  function collectPassengers() {
+    const passengers = [];
+    for (let i = 0; i < passengerCount; i++) {
+      passengers.push({
+        type: document.querySelector(`[data-p="${i}"][data-f="type"]`).value,
+        title: document.querySelector(`[data-p="${i}"][data-f="title"]`).value,
+        firstName: document.querySelector(`[data-p="${i}"][data-f="firstName"]`).value,
+        surname: document.querySelector(`[data-p="${i}"][data-f="surname"]`).value,
+      });
+    }
+    return passengers;
+  }
+
+  function renderBreakdown(quote) {
+    const el = document.getElementById("fare-breakdown");
+    const paxRows = quote.passengers
+      .map(
+        (p, i) => `
+      <div class="summary-row">
+        <span>${p.type[0].toUpperCase() + p.type.slice(1)} ${i + 1} fare</span>
+        <span>${p.discount > 0 ? `<span class="price-old">${App.fmtMoney(p.base_fare, quote.currency)}</span>` : ""}${App.fmtMoney(p.fare_after_discount, quote.currency)}</span>
+      </div>`
+      )
+      .join("");
+    el.innerHTML = `
+      ${paxRows}
+      ${quote.deal_applied ? `<div class="summary-row"><span>Deal applied</span><span>${quote.deal_applied.title} (-${quote.deal_applied.discount_pct}%)</span></div>` : ""}
+      <div class="summary-row"><span>Fare subtotal</span><span>${App.fmtMoney(quote.fare_subtotal, quote.currency)}</span></div>
+      <div class="summary-row"><span>Taxes</span><span>${App.fmtMoney(quote.taxes_total, quote.currency)}</span></div>
+      <div class="summary-row"><span>Airport charges</span><span>${App.fmtMoney(quote.airport_charges_total, quote.currency)}</span></div>
+      <div class="summary-row"><span>Service fee</span><span>${App.fmtMoney(quote.service_fee, quote.currency)}</span></div>
+      <div class="summary-row"><span>Booking fee</span><span>${App.fmtMoney(quote.booking_fee, quote.currency)}</span></div>
+      ${quote.baggage_total > 0 ? `<div class="summary-row"><span>Extra baggage</span><span>${App.fmtMoney(quote.baggage_total, quote.currency)}</span></div>` : ""}
+      <div class="summary-row total"><span>Total</span><span>${App.fmtMoney(quote.grand_total, quote.currency)}</span></div>
+    `;
+  }
+
+  let latestQuote = null;
+  async function refreshQuote() {
+    const el = document.getElementById("fare-breakdown");
+    try {
+      latestQuote = await App.api("/quote", {
+        method: "POST",
+        body: JSON.stringify({
+          flightId,
+          passengers: collectPassengers(),
+          extras: {
+            extraBag: document.getElementById("extra-bag").checked,
+            assistance: document.getElementById("extra-assist").checked,
+          },
+        }),
+      });
+      renderBreakdown(latestQuote);
+    } catch (err) {
+      el.innerHTML = `<div class="alert alert-error">Could not calculate fare. ${err.message}</div>`;
+    }
+  }
+
+  pf.addEventListener("change", refreshQuote);
+  document.getElementById("extra-bag").addEventListener("change", refreshQuote);
+  document.getElementById("extra-assist").addEventListener("change", refreshQuote);
+  refreshQuote();
+
+  document.getElementById("booking-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById("form-error");
+    errorEl.style.display = "none";
+
+    const passengers = collectPassengers();
+    const payload = {
+      flightId,
+      travelDate: dateInput.value,
+      passengers,
+      contact: {
+        email: document.getElementById("c-email").value,
+        phone: document.getElementById("c-phone").value,
+      },
+      extras: {
+        extraBag: document.getElementById("extra-bag").checked,
+        assistance: document.getElementById("extra-assist").checked,
+      },
+    };
+
+    try {
+      const booking = await App.api("/bookings", { method: "POST", body: JSON.stringify(payload) });
+      location.href = "/confirmation?ref=" + booking.reference + "&surname=" + encodeURIComponent(passengers[0].surname);
+    } catch (err) {
+      errorEl.textContent = (err.data && err.data.errors && err.data.errors.join("; ")) || err.message;
+      errorEl.style.display = "block";
+    }
+  });
+})();
+</script>
+</body>
+</html>

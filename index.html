@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fly with Us</title>
+<meta name="description" content="Book flights across East and West Africa. Search fares, manage bookings, and check flight status.">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+
+<main>
+  <section class="hero" style="padding-bottom:20px;">
+    <img class="hero-bg-image" src="/img/homepage-hero.jpg" alt="" onerror="this.style.display='none'">
+    <h1 id="hero-heading">Africa, Elevated.</h1>
+    <p class="tagline">Search, book, and manage your flights in minutes.</p>
+  </section>
+
+  <div class="search-card">
+    <div class="trip-type" role="radiogroup" aria-label="Trip type">
+      <label><input type="radio" name="tripType" value="oneway"> One way</label>
+      <label><input type="radio" name="tripType" value="roundtrip" checked> Round trip</label>
+    </div>
+    <form id="search-form">
+      <div class="search-grid">
+        <div class="field">
+          <label for="origin">From</label>
+          <select id="origin" required></select>
+        </div>
+        <div class="field">
+          <label for="destination">To</label>
+          <select id="destination" required></select>
+        </div>
+        <div class="field">
+          <label for="departDate">Departure</label>
+          <input type="date" id="departDate" required>
+        </div>
+        <div class="field" id="returnField">
+          <label for="returnDate">Return</label>
+          <input type="date" id="returnDate">
+        </div>
+        <div class="field">
+          <label for="passengers">Passengers</label>
+          <input type="number" id="passengers" min="1" max="9" value="1">
+        </div>
+        <button type="submit">Search Flights</button>
+      </div>
+    </form>
+    <div id="search-error" class="alert alert-error" style="display:none;margin-top:14px;"></div>
+  </div>
+
+  <section>
+    <h2>Popular Destinations</h2>
+    <p class="section-sub">Discover where we fly.</p>
+    <div class="grid grid-4" id="destinations-teaser"></div>
+  </section>
+
+  <section style="background:#fff;">
+    <h2>Current Deals</h2>
+    <p class="section-sub">Limited-time fares, updated by our team.</p>
+    <div class="grid grid-3" id="deals-teaser"></div>
+  </section>
+
+  <section>
+    <h2>Our Fleet</h2>
+    <p class="section-sub">Modern aircraft built for regional and continental travel.</p>
+    <div class="grid grid-3" id="fleet-teaser"></div>
+  </section>
+</main>
+
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.initLayout("/", "Hello, I would like information about flights.");
+  document.getElementById("hero-heading").textContent = cfg.company.tagline;
+
+  const { results: airports } = await App.api("/airports");
+  const originSel = document.getElementById("origin");
+  const destSel = document.getElementById("destination");
+  for (const a of airports) {
+    originSel.insertAdjacentHTML("beforeend", `<option value="${a.code}">${a.city} (${a.code})</option>`);
+    destSel.insertAdjacentHTML("beforeend", `<option value="${a.code}">${a.city} (${a.code})</option>`);
+  }
+  originSel.value = "WIL";
+  destSel.value = "MBA";
+
+  document.querySelectorAll('input[name="tripType"]').forEach((r) =>
+    r.addEventListener("change", (e) => {
+      document.getElementById("returnField").style.display = e.target.value === "oneway" ? "none" : "flex";
+      document.getElementById("returnDate").required = e.target.value !== "oneway";
+    })
+  );
+
+  document.getElementById("search-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById("search-error");
+    errorEl.style.display = "none";
+    if (originSel.value === destSel.value) {
+      errorEl.textContent = "Origin and destination cannot be the same.";
+      errorEl.style.display = "block";
+      return;
+    }
+    const params = new URLSearchParams({
+      origin: originSel.value,
+      destination: destSel.value,
+      date: document.getElementById("departDate").value,
+      passengers: document.getElementById("passengers").value,
+    });
+    const returnDate = document.getElementById("returnDate").value;
+    if (returnDate) params.set("returnDate", returnDate);
+    location.href = "/search?" + params.toString();
+  });
+
+  const { results: destinations } = await App.api("/destinations");
+  document.getElementById("destinations-teaser").innerHTML = destinations
+    .slice(0, 4)
+    .map(
+      (d) => `
+      <a class="card" href="/destination?slug=${d.slug}" style="text-decoration:none;color:inherit;">
+        <img src="${d.hero_image}" alt="${d.name}" onerror="this.style.background='#ddd'">
+        <div class="card-body">
+          <h3>${d.name}</h3>
+          <p>${d.country}</p>
+        </div>
+      </a>`
+    )
+    .join("");
+
+  const { results: deals } = await App.api("/deals");
+  document.getElementById("deals-teaser").innerHTML = deals.length
+    ? deals
+        .map(
+          (d) => `
+        <div class="card">
+          <div class="card-body">
+            <h3>${d.title}</h3>
+            <p>${d.travel_window}</p>
+            <span class="price-old">${App.fmtMoney(d.old_price, cfg.payment.currency)}</span>
+            <span class="price-tag">${App.fmtMoney(d.current_price, cfg.payment.currency)}</span>
+            <div style="margin-top:12px;"><a class="btn" href="/deals">View Deal</a></div>
+          </div>
+        </div>`
+        )
+        .join("")
+    : `<p>No active deals right now — check back soon.</p>`;
+
+  const { results: fleet } = await App.api("/fleet");
+  document.getElementById("fleet-teaser").innerHTML = fleet
+    .map(
+      (a) => `
+      <div class="card">
+        <div class="card-body">
+          <h3>${a.name}</h3>
+          <p>${a.model} &middot; ${a.capacity} seats</p>
+          <p>${a.description}</p>
+        </div>
+      </div>`
+    )
+    .join("");
+})();
+</script>
+</body>
+</html>

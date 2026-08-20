@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking Confirmation & Payment</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;max-width:720px;">
+  <div class="steps">
+    <span class="step">1. Search</span>
+    <span class="step">2. Select Flight</span>
+    <span class="step">3. Passenger &amp; Contact</span>
+    <span class="step">4. Review &amp; Confirm</span>
+    <span class="step active">5. Ticket &amp; Payment</span>
+  </div>
+  <div id="content">Loading your booking...</div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.initLayout(null, "Hello, I need help with my flight booking.");
+  const ref = App.qs("ref");
+  const surname = App.qs("surname");
+  const el = document.getElementById("content");
+
+  try {
+    const { booking, flight } = await App.api(`/bookings/${ref}?surname=${encodeURIComponent(surname)}`);
+    const fb = booking.fare_breakdown;
+
+    const statusBadge = {
+      PENDING: "badge-warn",
+      PAID: "badge-success",
+      FAILED: "badge-danger",
+      CANCELLED: "badge-danger",
+      REFUND_REQUESTED: "badge-warn",
+      REFUNDED: "badge-success",
+    }[booking.payment_status] || "badge-warn";
+
+    el.innerHTML = `
+      <div class="alert alert-success">Booking confirmed! Your reference is <strong>${booking.reference}</strong>. Keep this reference and the surname on the booking to manage it later.</div>
+
+      <h2 style="font-size:1.15rem;">Ticket / Booking Details</h2>
+      <div class="summary-box" style="margin-bottom:20px;">
+        <div class="summary-row"><span>Reference</span><span>${booking.reference}</span></div>
+        <div class="summary-row"><span>Flight</span><span>${flight.flight_number} &middot; ${flight.origin} &rarr; ${flight.destination}</span></div>
+        <div class="summary-row"><span>Travel Date</span><span>${booking.travel_date || "TBC"}</span></div>
+        <div class="summary-row"><span>Departure</span><span>${flight.departure_time}</span></div>
+        <div class="summary-row"><span>Arrival</span><span>${flight.arrival_time}</span></div>
+        <div class="summary-row"><span>Passengers</span><span>${booking.passengers.map((p) => `${p.title} ${p.firstName} ${p.surname} (${p.type})`).join(", ")}</span></div>
+        <div class="summary-row"><span>Booking Status</span><span>${booking.booking_status}</span></div>
+        <div class="summary-row"><span>Payment Status</span><span><span class="badge ${statusBadge}">${booking.payment_status}</span></span></div>
+      </div>
+
+      <h2 style="font-size:1.15rem;">Fare Breakdown</h2>
+      <div class="summary-box" style="margin-bottom:20px;">
+        <div class="summary-row"><span>Fare subtotal</span><span>${App.fmtMoney(fb.fare_subtotal, fb.currency)}</span></div>
+        ${fb.discount_total > 0 ? `<div class="summary-row"><span>Discount${fb.deal_applied ? " (" + fb.deal_applied.title + ")" : ""}</span><span>-${App.fmtMoney(fb.discount_total, fb.currency)}</span></div>` : ""}
+        <div class="summary-row"><span>Taxes</span><span>${App.fmtMoney(fb.taxes_total, fb.currency)}</span></div>
+        <div class="summary-row"><span>Airport charges</span><span>${App.fmtMoney(fb.airport_charges_total, fb.currency)}</span></div>
+        <div class="summary-row"><span>Service fee</span><span>${App.fmtMoney(fb.service_fee, fb.currency)}</span></div>
+        <div class="summary-row"><span>Booking fee</span><span>${App.fmtMoney(fb.booking_fee, fb.currency)}</span></div>
+        ${fb.baggage_total > 0 ? `<div class="summary-row"><span>Extra baggage</span><span>${App.fmtMoney(fb.baggage_total, fb.currency)}</span></div>` : ""}
+        <div class="summary-row total"><span>Total Due</span><span>${App.fmtMoney(fb.grand_total, fb.currency)}</span></div>
+      </div>
+
+      <h2 style="font-size:1.15rem;">Complete Payment</h2>
+      <div class="summary-box" style="margin-bottom:8px;">
+        ${
+          booking.payment_status === "PAID"
+            ? `<div class="alert alert-success" style="margin:0;">Payment confirmed. No further action needed.</div>`
+            : `<p style="margin-top:0;color:var(--muted);font-size:0.9rem;">Tap below to send your booking details and total to our payments team on WhatsApp. This does <strong>not</strong> mark your booking as paid automatically — our team confirms payment status once received.</p>
+               <a class="btn" style="background:#25D366;color:#fff;" href="${App.whatsappLink(cfg, App.buildPaymentMessage(booking))}" target="_blank" rel="noopener">Pay via WhatsApp</a>`
+        }
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+        <a class="btn" href="/manage-booking?ref=${booking.reference}&surname=${encodeURIComponent(surname)}">Manage This Booking</a>
+        <button onclick="window.print()">Download / Print Itinerary</button>
+      </div>`;
+  } catch (err) {
+    el.innerHTML = `<div class="alert alert-error">We couldn't find that booking. If you just booked, double-check the link, or use Manage Booking with your reference and surname.</div>`;
+  }
+})();
+</script>
+</body>
+</html>

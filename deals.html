@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deals & Offers</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;">
+  <h1>Deals &amp; Offers</h1>
+  <p class="section-sub">Fares below are set by our team and can change without notice.</p>
+  <div class="grid grid-3" id="list"></div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.initLayout("/deals");
+  const { results } = await App.api("/deals");
+  const el = document.getElementById("list");
+  el.innerHTML = results.length
+    ? results.map((d) => `
+      <div class="card">
+        <div class="card-body">
+          <h3>${d.title}</h3>
+          <p>${d.travel_window} &middot; ${d.booking_window}</p>
+          <span class="price-old">${App.fmtMoney(d.old_price, cfg.payment.currency)}</span>
+          <span class="price-tag">${App.fmtMoney(d.current_price, cfg.payment.currency)}</span>
+          <div style="margin-top:12px;"><a class="btn" href="/destination?slug=${d.destination_slug}">View Destination</a></div>
+        </div>
+      </div>`).join("")
+    : `<p>No active deals right now — check back soon.</p>`;
+})();
+</script>
+</body>
+</html>

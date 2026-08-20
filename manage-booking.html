@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Booking</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;max-width:720px;">
+  <h1>Manage Booking</h1>
+  <p class="section-sub">Enter your booking reference and the surname on the booking.</p>
+  <form id="lookup-form" class="field-row" style="align-items:end;margin-bottom:24px;">
+    <div class="field"><label for="ref">Booking Reference</label><input id="ref" required style="text-transform:uppercase;"></div>
+    <div class="field"><label for="surname">Surname</label><input id="surname" required></div>
+    <button type="submit">Find Booking</button>
+  </form>
+  <div id="result"></div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.initLayout("/manage-booking", "Hello, I need help with my flight booking.");
+  const resultEl = document.getElementById("result");
+
+  const statusBadge = {
+    PENDING: "badge-warn", PAID: "badge-success", FAILED: "badge-danger",
+    CANCELLED: "badge-danger", REFUND_REQUESTED: "badge-warn", REFUNDED: "badge-success",
+  };
+
+  async function doLookup(ref, surname) {
+    resultEl.innerHTML = "Looking up...";
+    try {
+      const { booking, flight } = await App.api(`/bookings/${ref}?surname=${encodeURIComponent(surname)}`);
+      render(booking, flight, surname);
+    } catch (err) {
+      resultEl.innerHTML = `<div class="alert alert-error">${err.data && err.data.error ? err.data.error : "Something went wrong."}</div>`;
+    }
+  }
+
+  function render(booking, flight, surname) {
+    const fb = booking.fare_breakdown;
+    resultEl.innerHTML = `
+      <div class="summary-box" style="margin-bottom:16px;">
+        <div class="summary-row"><span>Reference</span><span>${booking.reference}</span></div>
+        <div class="summary-row"><span>Booking Status</span><span><span class="badge ${booking.booking_status === "CANCELLED" ? "badge-danger" : "badge-success"}">${booking.booking_status}</span></span></div>
+        <div class="summary-row"><span>Payment Status</span><span><span class="badge ${statusBadge[booking.payment_status] || "badge-warn"}">${booking.payment_status}</span></span></div>
+        <div class="summary-row"><span>Flight</span><span>${flight.flight_number} &middot; ${flight.origin} &rarr; ${flight.destination}</span></div>
+        <div class="summary-row"><span>Travel Date</span><span>${booking.travel_date || "TBC"}</span></div>
+        <div class="summary-row"><span>Departure</span><span>${flight.departure_time}</span></div>
+        <div class="summary-row"><span>Passengers</span><span>${booking.passengers.map((p) => `${p.title} ${p.firstName} ${p.surname} (${p.type})`).join(", ")}</span></div>
+      </div>
+
+      ${fb ? `
+      <div class="summary-box" style="margin-bottom:16px;">
+        <div class="summary-row"><span>Fare subtotal</span><span>${App.fmtMoney(fb.fare_subtotal, fb.currency)}</span></div>
+        ${fb.discount_total > 0 ? `<div class="summary-row"><span>Discount</span><span>-${App.fmtMoney(fb.discount_total, fb.currency)}</span></div>` : ""}
+        <div class="summary-row"><span>Taxes &amp; charges</span><span>${App.fmtMoney(fb.taxes_total + fb.airport_charges_total, fb.currency)}</span></div>
+        <div class="summary-row"><span>Fees</span><span>${App.fmtMoney(fb.service_fee + fb.booking_fee, fb.currency)}</span></div>
+        ${fb.baggage_total > 0 ? `<div class="summary-row"><span>Extra baggage</span><span>${App.fmtMoney(fb.baggage_total, fb.currency)}</span></div>` : ""}
+        <div class="summary-row total"><span>Total</span><span>${App.fmtMoney(fb.grand_total, fb.currency)}</span></div>
+      </div>` : ""}
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="window.print()">Download Itinerary</button>
+        <a class="btn btn-secondary" href="${App.whatsappLink(cfg, "Hello, I need help with booking " + booking.reference)}" target="_blank" rel="noopener">Contact Support</a>
+        ${fb && !["PAID", "CANCELLED"].includes(booking.payment_status) ? `<a class="btn" style="background:#25D366;color:#fff;" href="${App.whatsappLink(cfg, App.buildPaymentMessage(booking))}" target="_blank" rel="noopener">Pay via WhatsApp</a>` : ""}
+        ${booking.booking_status !== "CANCELLED" ? `<button class="btn-danger" id="cancel-btn">Request Cancellation</button>` : ""}
+      </div>
+      <div id="cancel-msg" style="margin-top:12px;"></div>`;
+
+    const cancelBtn = document.getElementById("cancel-btn");
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", async () => {
+        if (!confirm("Cancel this booking? This cannot be undone here.")) return;
+        try {
+          const updated = await App.api(`/bookings/${booking.reference}/cancel`, {
+            method: "POST",
+            body: JSON.stringify({ surname }),
+          });
+          render(updated, flight, surname);
+          document.getElementById("cancel-msg").innerHTML = `<div class="alert alert-success">Booking cancelled. Seats have been released back to inventory.</div>`;
+        } catch (err) {
+          document.getElementById("cancel-msg").innerHTML = `<div class="alert alert-error">${err.data.error || "Could not cancel."}</div>`;
+        }
+      });
+    }
+  }
+
+  document.getElementById("lookup-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    doLookup(document.getElementById("ref").value.trim().toUpperCase(), document.getElementById("surname").value.trim());
+  });
+
+  const prefRef = App.qs("ref");
+  const prefSurname = App.qs("surname");
+  if (prefRef && prefSurname) {
+    document.getElementById("ref").value = prefRef;
+    document.getElementById("surname").value = prefSurname;
+    doLookup(prefRef, prefSurname);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flight Status</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header" id="site-header"></header>
+<main class="container" style="padding-top:30px;">
+  <h1>Flight Status</h1>
+  <div class="sim-note">Flight status shown here is generated from our own schedule and booking data. It is not a live aviation data feed. That integration point is documented in the admin dashboard.</div>
+
+  <form id="status-form" class="filters-bar">
+    <div class="field"><label for="flightNumber">Flight Number</label><input id="flightNumber" placeholder="e.g. HW101"></div>
+    <div class="field"><label for="origin">Origin</label><select id="origin"><option value="">Any</option></select></div>
+    <div class="field"><label for="destination">Destination</label><select id="destination"><option value="">Any</option></select></div>
+    <div class="field"><label for="date">Date</label><input type="date" id="date"></div>
+    <button type="submit">Check Status</button>
+  </form>
+
+  <div id="results"></div>
+</main>
+<a href="#" class="whatsapp-float" id="whatsapp-float"></a>
+<footer class="site-footer" id="site-footer"></footer>
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  await App.initLayout("/flight-status");
+  const { results: airports } = await App.api("/airports");
+  for (const a of airports) {
+    document.getElementById("origin").insertAdjacentHTML("beforeend", `<option value="${a.code}">${a.city} (${a.code})</option>`);
+    document.getElementById("destination").insertAdjacentHTML("beforeend", `<option value="${a.code}">${a.city} (${a.code})</option>`);
+  }
+  document.getElementById("date").value = new Date().toISOString().slice(0, 10);
+
+  const statusColor = { "SCHEDULED": "badge-success", "CHECK-IN OPEN": "badge-success", "BOARDING": "badge-warn", "DEPARTED": "badge-warn", "IN AIR": "badge-warn", "LANDED": "badge-success", "COMPLETED": "badge-success", "DELAYED": "badge-danger", "CANCELLED": "badge-danger" };
+
+  async function search() {
+    const params = new URLSearchParams();
+    const fn = document.getElementById("flightNumber").value.trim();
+    if (fn) params.set("flightNumber", fn);
+    const origin = document.getElementById("origin").value;
+    if (origin) params.set("origin", origin);
+    const destination = document.getElementById("destination").value;
+    if (destination) params.set("destination", destination);
+    const date = document.getElementById("date").value;
+    if (date) params.set("date", date);
+
+    const { results } = await App.api("/flight-status?" + params.toString());
+    const el = document.getElementById("results");
+    if (!results.length) {
+      el.innerHTML = `<div class="alert alert-error">No flights matched.</div>`;
+      return;
+    }
+    el.innerHTML = results
+      .map(
+        (s) => `
+      <div class="flight-row" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+        <div><div class="times">${s.flight_number}</div><div class="meta">${s.aircraft_name}</div></div>
+        <div><div class="meta">Route</div><div>${s.origin} &rarr; ${s.destination}</div></div>
+        <div><div class="meta">Scheduled</div><div>${s.scheduled_departure} &rarr; ${s.scheduled_arrival}</div></div>
+        <div><span class="badge ${statusColor[s.status] || "badge-success"}">${s.status}</span></div>
+      </div>`
+      )
+      .join("");
+  }
+
+  document.getElementById("status-form").addEventListener("submit", (e) => { e.preventDefault(); search(); });
+  search();
+})();
+</script>
+</body>
+</html>
