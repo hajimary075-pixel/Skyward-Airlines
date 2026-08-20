@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="login-screen" class="container" style="max-width:400px;padding-top:80px;">
+  <h1>Admin Login</h1>
+  <p class="section-sub">Demo authentication only — replace with real hashed-password + session/role auth before production use.</p>
+  <div class="field"><label for="token">Access Token</label><input id="token" type="password"></div>
+  <button id="login-btn" style="margin-top:12px;">Sign In</button>
+  <div id="login-error" class="alert alert-error" style="display:none;margin-top:12px;"></div>
+</div>
+
+<div id="admin-shell" class="admin-shell" style="display:none;">
+  <aside class="admin-sidebar">
+    <div style="padding:0 20px 16px;font-weight:800;font-size:1.1rem;">Admin Panel</div>
+    <a href="#overview" data-tab="overview" class="active">Dashboard</a>
+    <a href="#flights" data-tab="flights">Flights</a>
+    <a href="#inventory" data-tab="inventory">Inventory</a>
+    <a href="#bookings" data-tab="bookings">Bookings</a>
+    <a href="#destinations" data-tab="destinations">Destinations</a>
+    <a href="#enquiries" data-tab="enquiries">Contact Enquiries</a>
+    <a href="#audit" data-tab="audit">Audit Log</a>
+    <a href="/" style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;">&larr; Back to site</a>
+  </aside>
+  <main class="admin-main">
+    <div class="sim-note">This dashboard operates on the same local JSON data store used by the customer-facing site. Payment and live flight-status integrations are not yet connected — see README for what's required to go live.</div>
+    <div id="tab-content">Loading...</div>
+  </main>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+(async function () {
+  const cfg = await App.getConfig();
+  document.title = "Admin | " + cfg.company.name;
+
+  let token = localStorage.getItem("hw_admin_token") || "";
+
+  async function adminApi(path) {
+    const res = await fetch("/api/admin" + path, { headers: { Authorization: "Bearer " + token } });
+    if (res.status === 401) throw new Error("unauthorized");
+    return res.json();
+  }
+  async function adminPut(path, body) {
+    const res = await fetch("/api/admin" + path, {
+      method: "PUT",
+      headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return res.json();
+  }
+
+  function showApp() {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("admin-shell").style.display = "flex";
+    loadTab(location.hash.replace("#", "") || "overview");
+  }
+
+  document.getElementById("login-btn").addEventListener("click", async () => {
+    token = document.getElementById("token").value;
+    try {
+      await adminApi("/overview");
+      localStorage.setItem("hw_admin_token", token);
+      showApp();
+    } catch (e) {
+      document.getElementById("login-error").textContent = "Invalid access token.";
+      document.getElementById("login-error").style.display = "block";
+    }
+  });
+
+  document.querySelectorAll(".admin-sidebar a[data-tab]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelectorAll(".admin-sidebar a").forEach((x) => x.classList.remove("active"));
+      a.classList.add("active");
+      loadTab(a.dataset.tab);
+    })
+  );
+
+  async function loadTab(tab) {
+    const content = document.getElementById("tab-content");
+    content.innerHTML = "Loading...";
+    try {
+      if (tab === "overview") {
+        const o = await adminApi("/overview");
+        content.innerHTML = `
+          <h1>Dashboard Overview</h1>
+          <div class="stat-cards">
+            <div class="stat-card"><div class="value">${o.total_bookings}</div><div class="label">Total Bookings</div></div>
+            <div class="stat-card"><div class="value">${o.bookings_today}</div><div class="label">Bookings Today</div></div>
+            <div class="stat-card"><div class="value">${App.fmtMoney(o.revenue, cfg.payment.currency)}</div><div class="label">Revenue (paid)</div></div>
+            <div class="stat-card"><div class="value">${o.pending_payments}</div><div class="label">Pending Payments</div></div>
+            <div class="stat-card"><div class="value">${o.seats_booked}</div><div class="label">Seats Booked</div></div>
+            <div class="stat-card"><div class="value">${o.seats_remaining}</div><div class="label">Seats Remaining</div></div>
+            <div class="stat-card"><div class="value">${o.open_enquiries}</div><div class="label">Open Enquiries</div></div>
+            <div class="stat-card"><div class="value">${o.cancellations}</div><div class="label">Cancellations</div></div>
+          </div>`;
+      }
+
+      if (tab === "flights") {
+        const { results } = await adminApi("/flights");
+        content.innerHTML = `<h1>Flights</h1>
+          <table class="data-table"><thead><tr><th>Flight</th><th>Route</th><th>Departs</th><th>Arrives</th><th>Fare</th><th>Capacity</th><th></th></tr></thead>
+          <tbody>${results.map((f) => `
+            <tr data-id="${f.id}">
+              <td>${f.flight_number}</td>
+              <td>${f.origin} &rarr; ${f.destination}</td>
+              <td><input class="edit-departure" value="${f.departure_time}" style="width:80px;"></td>
+              <td><input class="edit-arrival" value="${f.arrival_time}" style="width:80px;"></td>
+              <td><input class="edit-fare" type="number" value="${f.base_fare}" style="width:80px;"></td>
+              <td><input class="edit-capacity" type="number" value="${f.capacity}" style="width:70px;"></td>
+              <td><button class="save-flight">Save</button></td>
+            </tr>`).join("")}</tbody></table>`;
+        content.querySelectorAll(".save-flight").forEach((btn) =>
+          btn.addEventListener("click", async () => {
+            const row = btn.closest("tr");
+            const id = row.dataset.id;
+            const body = {
+              departure_time: row.querySelector(".edit-departure").value,
+              arrival_time: row.querySelector(".edit-arrival").value,
+              base_fare: Number(row.querySelector(".edit-fare").value),
+              capacity: Number(row.querySelector(".edit-capacity").value),
+            };
+            await adminPut("/flights/" + id, body);
+            btn.textContent = "Saved";
+            setTimeout(() => (btn.textContent = "Save"), 1200);
+          })
+        );
+      }
+
+      if (tab === "inventory") {
+        const { results } = await adminApi("/inventory");
+        content.innerHTML = `<h1>Inventory</h1>
+          <table class="data-table"><thead><tr><th>Flight</th><th>Route</th><th>Capacity</th><th>Booked</th><th>Held</th><th>Available</th></tr></thead>
+          <tbody>${results.map((r) => `<tr><td>${r.flight_number}</td><td>${r.route}</td><td>${r.capacity}</td><td>${r.booked}</td><td>${r.held}</td><td>${r.available}</td></tr>`).join("")}</tbody></table>`;
+      }
+
+      if (tab === "bookings") {
+        const { results } = await adminApi("/bookings");
+        const statuses = ["PENDING", "PAID", "FAILED", "CANCELLED", "REFUND_REQUESTED", "REFUNDED"];
+        content.innerHTML = `<h1>Bookings</h1>
+          <p class="section-sub">Payment status here is the single source of truth — the customer's WhatsApp button never changes it. Confirm receipt of payment, then set it to PAID.</p>
+          <table class="data-table"><thead><tr><th>Reference</th><th>Flight</th><th>Date</th><th>Passengers</th><th>Booking Status</th><th>Payment Status</th><th>Fare</th><th>Taxes/Fees</th><th>Total</th><th>Created</th></tr></thead>
+          <tbody>${results.map((b) => {
+            const fb = b.fare_breakdown;
+            const taxesFees = fb ? fb.taxes_total + fb.airport_charges_total + fb.service_fee + fb.booking_fee : 0;
+            return `
+            <tr data-ref="${b.reference}">
+              <td>${b.reference}</td>
+              <td>${b.flight_number}</td>
+              <td>${b.travel_date || "-"}</td>
+              <td>${b.passengers.map((p) => p.firstName + " " + p.surname).join(", ")}</td>
+              <td>${b.booking_status}</td>
+              <td>
+                <select class="payment-status-select">
+                  ${statuses.map((s) => `<option value="${s}" ${s === b.payment_status ? "selected" : ""}>${s}</option>`).join("")}
+                </select>
+                <button class="save-payment-status">Update</button>
+              </td>
+              <td>${fb ? App.fmtMoney(fb.fare_subtotal - fb.discount_total, b.currency) : "-"}</td>
+              <td>${fb ? App.fmtMoney(taxesFees, b.currency) : "-"}</td>
+              <td>${App.fmtMoney(b.fare_total, b.currency)}</td>
+              <td>${new Date(b.created_at).toLocaleString()}</td>
+            </tr>`;
+          }).join("") || `<tr><td colspan="10">No bookings yet.</td></tr>`}</tbody></table>`;
+
+        content.querySelectorAll(".save-payment-status").forEach((btn) =>
+          btn.addEventListener("click", async () => {
+            const row = btn.closest("tr");
+            const ref = row.dataset.ref;
+            const status = row.querySelector(".payment-status-select").value;
+            const res = await fetch(`/api/admin/bookings/${ref}/payment-status`, {
+              method: "POST",
+              headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+              body: JSON.stringify({ status }),
+            });
+            btn.textContent = res.ok ? "Updated" : "Failed";
+            setTimeout(() => (btn.textContent = "Update"), 1200);
+          })
+        );
+      }
+
+      if (tab === "destinations") {
+        const [{ results: dests }, { results: flights }] = await Promise.all([
+          adminApi("/destinations"),
+          adminApi("/flights"),
+        ]);
+        content.innerHTML = `<h1>Destinations (${dests.length})</h1>
+          <p class="section-sub">Editing destination copy/images/gallery is done via data/seed.json (or extend this tab with a form once you're ready for full CRUD — see README).</p>
+          <table class="data-table"><thead><tr><th>Name</th><th>Country</th><th>Airport</th><th>Routes from hub</th></tr></thead>
+          <tbody>${dests.map((d) => `
+            <tr>
+              <td>${d.name}</td>
+              <td>${d.country}</td>
+              <td>${d.airport_code}</td>
+              <td>${flights.filter((f) => f.destination === d.airport_code).length}</td>
+            </tr>`).join("")}</tbody></table>`;
+      }
+
+      if (tab === "enquiries") {
+        const { results } = await adminApi("/enquiries");
+        content.innerHTML = `<h1>Contact Enquiries</h1>
+          <table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Received</th></tr></thead>
+          <tbody>${results.map((e) => `<tr><td>${e.name}</td><td>${e.email}</td><td>${e.subject}</td><td>${e.status}</td><td>${new Date(e.created_at).toLocaleString()}</td></tr>`).join("") || `<tr><td colspan="5">No enquiries yet.</td></tr>`}</tbody></table>`;
+      }
+
+      if (tab === "audit") {
+        const { results } = await adminApi("/audit-log");
+        content.innerHTML = `<h1>Audit Log</h1>
+          <table class="data-table"><thead><tr><th>Action</th><th>Details</th><th>At</th></tr></thead>
+          <tbody>${results.map((a) => `<tr><td>${a.action}</td><td><code>${App.escapeHtml(JSON.stringify(a.details))}</code></td><td>${new Date(a.at).toLocaleString()}</td></tr>`).join("") || `<tr><td colspan="3">No activity yet.</td></tr>`}</tbody></table>`;
+      }
+    } catch (e) {
+      content.innerHTML = `<div class="alert alert-error">Session expired or unauthorized. Please sign in again.</div>`;
+    }
+  }
+
+  if (token) {
+    adminApi("/overview").then(showApp).catch(() => localStorage.removeItem("hw_admin_token"));
+  }
+})();
+</script>
+</body>
+</html>
