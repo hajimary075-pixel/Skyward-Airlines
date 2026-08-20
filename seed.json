@@ -1,0 +1,1115 @@
+{
+  "_note": "PLACEHOLDER SEED DATA authored for this project. Airport codes are real published IATA codes (useful so routes look and behave correctly); flight numbers, exact times, capacities and fares are FICTIONAL and were NOT scraped or copied from any real airline's live systems — they are inspired by realistic fare tiers so the site feels genuine, not presented as live commercial data. Replace via the admin dashboard or by editing this file before going live. Migori has no officially assigned IATA code (confirmed via public aviation references — it uses ICAO HKMM only); 'MGR' below is an internal placeholder code, not an official designator — flag this to whoever manages real airline data integration later.",
+  "airports": [
+    {
+      "code": "WIL",
+      "name": "Wilson Airport",
+      "city": "Nairobi",
+      "country": "Kenya"
+    },
+    {
+      "code": "NBO",
+      "name": "Jomo Kenyatta International Airport",
+      "city": "Nairobi",
+      "country": "Kenya"
+    },
+    {
+      "code": "MBA",
+      "name": "Moi International Airport",
+      "city": "Mombasa",
+      "country": "Kenya"
+    },
+    {
+      "code": "DAR",
+      "name": "Julius Nyerere International Airport",
+      "city": "Dar es Salaam",
+      "country": "Tanzania"
+    },
+    {
+      "code": "EDL",
+      "name": "Eldoret International Airport",
+      "city": "Eldoret",
+      "country": "Kenya"
+    },
+    {
+      "code": "LOK",
+      "name": "Lodwar Airport",
+      "city": "Lodwar",
+      "country": "Kenya"
+    },
+    {
+      "code": "KTL",
+      "name": "Kitale Airport",
+      "city": "Kitale",
+      "country": "Kenya"
+    },
+    {
+      "code": "UKA",
+      "name": "Ukunda Airport",
+      "city": "Ukunda (Diani)",
+      "country": "Kenya"
+    },
+    {
+      "code": "MYD",
+      "name": "Malindi Airport",
+      "city": "Malindi",
+      "country": "Kenya"
+    },
+    {
+      "code": "LAU",
+      "name": "Manda Airport",
+      "city": "Lamu",
+      "country": "Kenya"
+    },
+    {
+      "code": "VPG",
+      "name": "Vipingo Ridge Airport",
+      "city": "Vipingo Ridge",
+      "country": "Kenya"
+    },
+    {
+      "code": "MGR",
+      "name": "Migori Airport",
+      "city": "Migori",
+      "country": "Kenya",
+      "code_note": "No official IATA code exists for this airstrip; MGR is an internal placeholder used only within this application."
+    },
+    {
+      "code": "KIS",
+      "name": "Kisumu International Airport",
+      "city": "Kisumu",
+      "country": "Kenya"
+    }
+  ],
+  "aircraft": [
+    {
+      "id": "ac-dash8",
+      "name": "Skyward Dash 8-200",
+      "model": "De Havilland Dash 8-200",
+      "capacity": 37,
+      "range_km": 1889,
+      "cruise_speed_kmh": 500,
+      "description": "Our turboprop for short regional and coastal hops into shorter airstrips where jet service isn't practical."
+    },
+    {
+      "id": "ac-e190",
+      "name": "Skyward E190",
+      "model": "Embraer E190",
+      "capacity": 100,
+      "range_km": 4537,
+      "cruise_speed_kmh": 829,
+      "description": "Our workhorse for higher-demand domestic routes with paved runways long enough for regional jets."
+    },
+    {
+      "id": "ac-738",
+      "name": "Skyward 738",
+      "model": "Boeing 737-800",
+      "capacity": 162,
+      "range_km": 5765,
+      "cruise_speed_kmh": 842,
+      "description": "Flies our one international route, balancing range and capacity for the Nairobi-Dar es Salaam service."
+    },
+    {
+      "id": "ac-a320",
+      "name": "Skyward A320",
+      "model": "Airbus A320neo",
+      "capacity": 180,
+      "range_km": 6300,
+      "cruise_speed_kmh": 833,
+      "description": "Reserved for future route expansion beyond our current domestic and regional network."
+    }
+  ],
+  "flights": [
+    {
+      "id": "HW101",
+      "flight_number": "HW101",
+      "origin": "WIL",
+      "destination": "MBA",
+      "aircraft_id": "ac-e190",
+      "departure_time": "07:00",
+      "arrival_time": "07:55",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 100
+    },
+    {
+      "id": "HW102",
+      "flight_number": "HW102",
+      "origin": "MBA",
+      "destination": "WIL",
+      "aircraft_id": "ac-e190",
+      "departure_time": "09:00",
+      "arrival_time": "09:55",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 100
+    },
+    {
+      "id": "HW121",
+      "flight_number": "HW121",
+      "origin": "WIL",
+      "destination": "EDL",
+      "aircraft_id": "ac-e190",
+      "departure_time": "12:30",
+      "arrival_time": "13:10",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 100
+    },
+    {
+      "id": "HW122",
+      "flight_number": "HW122",
+      "origin": "EDL",
+      "destination": "WIL",
+      "aircraft_id": "ac-e190",
+      "departure_time": "14:00",
+      "arrival_time": "14:40",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 100
+    },
+    {
+      "id": "HW131",
+      "flight_number": "HW131",
+      "origin": "WIL",
+      "destination": "KTL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "09:45",
+      "arrival_time": "10:40",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 10000,
+      "capacity": 37
+    },
+    {
+      "id": "HW132",
+      "flight_number": "HW132",
+      "origin": "KTL",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "11:10",
+      "arrival_time": "12:05",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 10000,
+      "capacity": 37
+    },
+    {
+      "id": "HW141",
+      "flight_number": "HW141",
+      "origin": "WIL",
+      "destination": "LOK",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "06:00",
+      "arrival_time": "07:15",
+      "operating_days": [
+        1,
+        2,
+        4,
+        0
+      ],
+      "base_fare": 11950,
+      "capacity": 37
+    },
+    {
+      "id": "HW142",
+      "flight_number": "HW142",
+      "origin": "LOK",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "07:45",
+      "arrival_time": "09:00",
+      "operating_days": [
+        1,
+        2,
+        4,
+        0
+      ],
+      "base_fare": 11950,
+      "capacity": 37
+    },
+    {
+      "id": "HW151",
+      "flight_number": "HW151",
+      "origin": "WIL",
+      "destination": "MYD",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "08:00",
+      "arrival_time": "08:55",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 37
+    },
+    {
+      "id": "HW152",
+      "flight_number": "HW152",
+      "origin": "MYD",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "09:25",
+      "arrival_time": "10:20",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 37
+    },
+    {
+      "id": "HW161",
+      "flight_number": "HW161",
+      "origin": "WIL",
+      "destination": "LAU",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "10:15",
+      "arrival_time": "11:25",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 10000,
+      "capacity": 37
+    },
+    {
+      "id": "HW162",
+      "flight_number": "HW162",
+      "origin": "LAU",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "11:55",
+      "arrival_time": "13:05",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 10000,
+      "capacity": 37
+    },
+    {
+      "id": "HW171",
+      "flight_number": "HW171",
+      "origin": "WIL",
+      "destination": "UKA",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "07:30",
+      "arrival_time": "08:20",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 37
+    },
+    {
+      "id": "HW172",
+      "flight_number": "HW172",
+      "origin": "UKA",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "08:50",
+      "arrival_time": "09:40",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 6500,
+      "capacity": 37
+    },
+    {
+      "id": "HW181",
+      "flight_number": "HW181",
+      "origin": "WIL",
+      "destination": "MGR",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "13:15",
+      "arrival_time": "14:15",
+      "operating_days": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "base_fare": 8500,
+      "capacity": 37
+    },
+    {
+      "id": "HW182",
+      "flight_number": "HW182",
+      "origin": "MGR",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "14:45",
+      "arrival_time": "15:45",
+      "operating_days": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "base_fare": 8500,
+      "capacity": 37
+    },
+    {
+      "id": "HW191",
+      "flight_number": "HW191",
+      "origin": "WIL",
+      "destination": "VPG",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "10:00",
+      "arrival_time": "10:50",
+      "operating_days": [
+        5,
+        0
+      ],
+      "base_fare": 15200,
+      "capacity": 37
+    },
+    {
+      "id": "HW192",
+      "flight_number": "HW192",
+      "origin": "VPG",
+      "destination": "WIL",
+      "aircraft_id": "ac-dash8",
+      "departure_time": "11:20",
+      "arrival_time": "12:10",
+      "operating_days": [
+        5,
+        0
+      ],
+      "base_fare": 15200,
+      "capacity": 37
+    },
+    {
+      "id": "HW201",
+      "flight_number": "HW201",
+      "origin": "WIL",
+      "destination": "KIS",
+      "aircraft_id": "ac-e190",
+      "departure_time": "16:00",
+      "arrival_time": "16:50",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 7500,
+      "capacity": 100
+    },
+    {
+      "id": "HW202",
+      "flight_number": "HW202",
+      "origin": "KIS",
+      "destination": "WIL",
+      "aircraft_id": "ac-e190",
+      "departure_time": "17:20",
+      "arrival_time": "18:10",
+      "operating_days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "base_fare": 7500,
+      "capacity": 100
+    },
+    {
+      "id": "HW315",
+      "flight_number": "HW315",
+      "origin": "NBO",
+      "destination": "DAR",
+      "aircraft_id": "ac-738",
+      "departure_time": "14:15",
+      "arrival_time": "15:40",
+      "operating_days": [
+        1,
+        3,
+        5,
+        6,
+        0
+      ],
+      "base_fare": 27350,
+      "capacity": 162
+    },
+    {
+      "id": "HW316",
+      "flight_number": "HW316",
+      "origin": "DAR",
+      "destination": "NBO",
+      "aircraft_id": "ac-738",
+      "departure_time": "16:20",
+      "arrival_time": "17:45",
+      "operating_days": [
+        1,
+        3,
+        5,
+        6,
+        0
+      ],
+      "base_fare": 27350,
+      "capacity": 162
+    }
+  ],
+  "destinations": [
+    {
+      "slug": "dar-es-salaam",
+      "name": "Dar es Salaam",
+      "country": "Tanzania",
+      "airport_code": "DAR",
+      "hero_image": "/img/destinations/dar-es-salaam-hero.jpg",
+      "gallery": [
+        "/img/destinations/dar-es-salaam-gallery-1.jpg",
+        "/img/destinations/dar-es-salaam-gallery-2.jpg",
+        "/img/destinations/dar-es-salaam-gallery-3.jpg"
+      ],
+      "description": "Tanzania's largest city and commercial hub, and a common gateway for onward travel to Zanzibar.",
+      "attractions": [
+        "Kivukoni Fish Market",
+        "National Museum & House of Culture",
+        "Kunduchi Beach",
+        "Msasani Peninsula"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Dar es Salaam's waterfront skyline, with high-rise towers rising behind the harbour and the Indian Ocean in the foreground.",
+          "heading": "Dar es Salaam — Where the City Meets the Indian Ocean",
+          "body": "Tanzania's largest city sits directly on the Indian Ocean, and that coastal setting shapes everything about it. Dar es Salaam grew from a small Swahili fishing settlement into a major East African port, absorbing waves of Arab, Indian and European influence along the way, and that layered history is still visible in its mosques, temples, colonial-era buildings and bustling produce markets. Today it is Tanzania's commercial engine, a fast-growing city of wide avenues, harbour views and palm-lined seafront roads, and for most travellers it also serves as the natural staging point for onward trips to Zanzibar and the northern safari circuit."
+        },
+        "gallery": [
+          {
+            "alt": "Dar es Salaam's harbour at the water's edge, with boats moored along the shoreline and the city skyline behind.",
+            "heading": "The Waterfront and Harbour",
+            "body": "Dar es Salaam translates roughly as \"haven of peace,\" a name that reflects its long identity as a sheltered natural harbour on the Indian Ocean trade routes. Dhows, ferries and cargo vessels still work the water today much as their predecessors did for centuries, carrying goods and passengers between the mainland, Zanzibar and beyond. A walk along the waterfront brings fishermen unloading their morning catch, ferry terminals busy with commuters, and open views across the harbour that are especially striking at sunset, when the water turns gold against the city's skyline."
+          },
+          {
+            "alt": "A street scene in central Dar es Salaam showing older architecture that reflects the city's mixed Swahili, Arab, Indian and colonial heritage.",
+            "heading": "History, Culture and Coastal Heritage",
+            "body": "Centuries of trade along the Swahili Coast left Dar es Salaam with a distinctly layered cultural identity, visible in its architecture and daily life alike. Grand mosques and Hindu temples stand near buildings from the city's German and later British colonial periods, while the Kariakoo Market remains one of East Africa's great trading hubs, filled with produce, spices, textiles and everyday commerce. The National Museum and House of Culture traces Tanzania's history from early hominid fossils through the colonial era to independence, offering useful context for the wider country beyond the city itself."
+          },
+          {
+            "alt": "A sandy beach along Dar es Salaam's Indian Ocean coastline, with palm trees and calm turquoise water.",
+            "heading": "Beaches and Indian Ocean Escapes",
+            "body": "Beyond the busy commercial core, Dar es Salaam's northern beaches offer an easy escape to warm water and white sand without leaving the city. Stretches like Kunduchi and the Msasani Peninsula draw both residents and visitors for swimming, beach volleyball and relaxed waterfront dining, with fresh seafood a constant highlight on local menus. The coastline also serves as the launch point for short boat trips to nearby islands and reefs, making it a natural place to unwind before or after exploring the city itself."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "vipingo-ridge",
+      "name": "Vipingo Ridge",
+      "country": "Kenya",
+      "airport_code": "VPG",
+      "hero_image": "/img/destinations/vipingo-ridge-hero.jpg",
+      "gallery": [
+        "/img/destinations/vipingo-ridge-gallery-1.jpg",
+        "/img/destinations/vipingo-ridge-gallery-2.jpg",
+        "/img/destinations/vipingo-ridge-gallery-3.jpg"
+      ],
+      "description": "A golf and coastal residential estate on Kenya's North Coast, known for its golf course and beach clubs.",
+      "attractions": [
+        "Vipingo golf course",
+        "Kilifi Creek day trips",
+        "North Coast beach clubs"
+      ],
+      "media": {
+        "hero": {
+          "alt": "A wide coastal landscape at Vipingo Ridge showing manicured grounds, ocean views and the North Coast shoreline.",
+          "heading": "Vipingo Ridge — Coastal Calm on Kenya's North Coast",
+          "body": "Set along a limestone ridge above the Indian Ocean north of Mombasa, Vipingo Ridge is a purpose-built coastal estate known for its resort-style pace of life. It combines championship golf, private beach clubs and landscaped grounds with genuine access to the wilder charms of the Kilifi coastline just beyond its gates. For travellers, it works equally well as a quiet base for a few unhurried days or as a springboard for exploring the reefs, creeks and conservation areas that define this stretch of Kenya's North Coast."
+        },
+        "gallery": [
+          {
+            "alt": "Clear shallow water and coral reef at Kuruwitu Marine Conservancy, with a glass-bottom boat or snorkellers visible.",
+            "heading": "Kuruwitu Marine Conservancy",
+            "body": "Just along the coast from Vipingo Ridge, the Kuruwitu Marine Conservancy is one of Kenya's notable community-led conservation success stories. Local fishing communities set aside a section of reef as a no-take zone, and the recovery in coral cover and fish life since has made it a rewarding spot for snorkelling and glass-bottom boat trips. Visitors can expect to see healthy coral gardens, reef fish in large numbers and, with good timing, sea turtles, while learning about the community conservation model that made the recovery possible."
+          },
+          {
+            "alt": "Bofa Beach on Kenya's North Coast, with white sand, palm trees and gentle Indian Ocean waves.",
+            "heading": "Bofa Beach and the Coastal Shore",
+            "body": "The beaches around Vipingo and neighbouring Kilifi are quieter and less developed than those further south around Mombasa, which is much of their appeal. Wide stretches of pale sand meet calm, reef-protected water that is well suited to swimming and long walks, while beachside kiosks and small restaurants serve fresh seafood with an unhurried, local rhythm. It is a coastline built for slowing down rather than sightseeing, with easy access from the estate for a half-day or full-day trip."
+          },
+          {
+            "alt": "Kilifi Creek with mangroves, calm water and small boats, or a fairway on the Vipingo golf course.",
+            "heading": "Kilifi Creek, Nature and Leisure",
+            "body": "A short drive from Vipingo Ridge, Kilifi Creek cuts inland from the ocean through mangrove-lined banks, creating calm water that is popular for kayaking, sailing and paddleboarding. The surrounding coastal forest and grasslands also support birdwatching and cycling routes for those who want to explore beyond the beach. Back at the estate itself, the championship golf course threads along the clifftop with ocean views on several holes, making it one of the more scenic rounds of golf on the Kenyan coast."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "mombasa",
+      "name": "Mombasa",
+      "country": "Kenya",
+      "airport_code": "MBA",
+      "hero_image": "/img/destinations/mombasa-hero.jpg",
+      "gallery": [
+        "/img/destinations/mombasa-gallery-1.jpg",
+        "/img/destinations/mombasa-gallery-2.jpg",
+        "/img/destinations/mombasa-gallery-3.jpg"
+      ],
+      "description": "Kenya's coastal city, known for its beaches, Old Town Swahili architecture, and Fort Jesus.",
+      "attractions": [
+        "Fort Jesus",
+        "Old Town",
+        "Haller Park",
+        "Nyali Beach"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Mombasa Old Town's narrow streets lined with coral-stone buildings and carved wooden Swahili doors.",
+          "heading": "Mombasa — A Living Heritage of the Swahili Coast",
+          "body": "Kenya's second city and principal port has been a crossroads of Swahili, Arab, Indian, Portuguese and British influence for close to a thousand years, and that history is written into its streets, food and architecture. Mombasa Old Town's coral-stone buildings and carved doors sit within walking distance of a working modern port, while the wider city fans out into palm-fringed beaches to the north and south. It remains one of East Africa's most atmospheric coastal cities, equally suited to history and beach time."
+        },
+        "gallery": [
+          {
+            "alt": "Haller Park in Mombasa, showing forested grounds, a pond and resident wildlife such as giraffe or hippo.",
+            "heading": "Haller Park — Wildlife and Conservation",
+            "body": "Haller Park is one of Mombasa's more unexpected attractions: a former limestone quarry that was rehabilitated over decades into a thriving nature reserve. Shaded forest trails now wind past resident giraffe, hippo, buffalo and a large reptile park, with several ponds attracting waterbirds throughout the year. The site is as much a story about ecological restoration as it is a wildlife stop, and its guided walks explain how a barren industrial site was returned to a functioning habitat."
+          },
+          {
+            "alt": "A white-sand Mombasa beach lined with palm trees and clear Indian Ocean water.",
+            "heading": "Mombasa's Beaches and Coastal Life",
+            "body": "North and south of the city centre, Mombasa's beaches are among the best known on the Kenyan coast, with fine white sand, warm shallow water and an offshore reef that keeps the surf gentle. Nyali and the beaches further afield support swimming, snorkelling, diving and a range of water sports, alongside beachfront restaurants serving grilled seafood and coastal Swahili dishes. The reef break also makes for dramatic scenery at low tide, when the exposed sandbanks stretch out toward the horizon."
+          },
+          {
+            "alt": "The historic stone walls and bastions of Fort Jesus overlooking the Old Port in Mombasa.",
+            "heading": "Fort Jesus — A Monument to Mombasa's History",
+            "body": "Built by the Portuguese in the late sixteenth century to guard the Old Port, Fort Jesus changed hands repeatedly between Portuguese, Omani and British control over the following three centuries, and its walls carry the marks of that turbulent history. Now a UNESCO World Heritage Site and museum, it houses artefacts recovered from shipwrecks and excavations that trace Mombasa's role in Indian Ocean trade. Its ramparts also offer sweeping views over the Old Port and directly into the narrow streets of Old Town below."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "lodwar",
+      "name": "Lodwar",
+      "country": "Kenya",
+      "airport_code": "LOK",
+      "hero_image": "/img/destinations/lodwar-hero.jpg",
+      "gallery": [
+        "/img/destinations/lodwar-gallery-1.jpg",
+        "/img/destinations/lodwar-gallery-2.jpg",
+        "/img/destinations/lodwar-gallery-3.jpg"
+      ],
+      "description": "The main town of Turkana County in Kenya's arid north, a gateway to Lake Turkana.",
+      "attractions": [
+        "Lake Turkana day trips",
+        "Turkana cultural sites",
+        "Central Island National Park (via connections)"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Lodwar town and the dry, open landscape of Turkana in Kenya's arid north.",
+          "heading": "Lodwar — Gateway to Turkana",
+          "body": "The largest town in Turkana County, Lodwar sits in one of Kenya's most striking and least-visited landscapes, a semi-arid region of scrubland, volcanic hills and dramatic open skies. It functions as the administrative and commercial centre for the wider Turkana region and is the natural starting point for onward travel toward Lake Turkana itself. For travellers drawn to remote landscapes and distinct cultures away from Kenya's more familiar circuits, Lodwar is the gateway into all of it."
+        },
+        "gallery": [
+          {
+            "alt": "Lake Turkana's alkaline blue-green water bordered by arid volcanic landscape.",
+            "heading": "Lake Turkana — The Jade Sea",
+            "body": "The world's largest permanent desert lake, Lake Turkana earns its nickname \"the Jade Sea\" from the striking blue-green colour its alkaline waters take on in certain light. Its shores are home to fishing communities who have adapted to one of the harshest environments in East Africa, and the lake's volcanic islands and surrounding badlands have also yielded some of the most important early-human fossil finds anywhere in the world. It is a landscape better suited to a small number of unforgettable images than a long list of activities, and that starkness is exactly its appeal."
+          },
+          {
+            "alt": "A group in traditional Turkana dress, beadwork and ornamentation, or a Turkana cultural scene.",
+            "heading": "Turkana Culture and Heritage",
+            "body": "The Turkana people have herded livestock across this arid region for generations, and their culture remains strongly visible in daily life around Lodwar, from elaborate beaded jewellery and distinctive dress to traditional homesteads adapted to the desert climate. Livestock, particularly camels and goats, remain central to both the local economy and social structure. Visitors who take the time to engage respectfully with local communities come away with a rare window into a way of life shaped entirely by this demanding landscape."
+          },
+          {
+            "alt": "A dramatic stretch of northern Kenyan landscape near Lodwar, with volcanic hills and open plains.",
+            "heading": "The Dramatic Northern Landscape",
+            "body": "The terrain around Lodwar is defined by wide open plains, isolated volcanic hills and a stark, sun-bleached palette that changes character throughout the day. It is a landscape built for photography and quiet exploration rather than a checklist of sites, rewarding travellers willing to slow down and take it in. For those continuing on toward Lake Turkana, the drive itself becomes part of the experience, passing through country that feels far removed from the rest of Kenya."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "ukunda",
+      "name": "Ukunda",
+      "country": "Kenya",
+      "airport_code": "UKA",
+      "hero_image": "/img/destinations/ukunda-hero.jpg",
+      "gallery": [
+        "/img/destinations/ukunda-gallery-1.jpg",
+        "/img/destinations/ukunda-gallery-2.jpg",
+        "/img/destinations/ukunda-gallery-3.jpg"
+      ],
+      "description": "Gateway to Diani Beach on Kenya's South Coast, one of the country's best-known beach destinations.",
+      "attractions": [
+        "Diani Beach",
+        "Kaya Kinondo Sacred Forest",
+        "Colobus Conservation"
+      ],
+      "media": {
+        "hero": {
+          "alt": "The white-sand, palm-lined coastline near Ukunda on Kenya's South Coast.",
+          "heading": "Ukunda — Gateway to Kenya's South Coast",
+          "body": "Ukunda itself is a modest town, but its real significance lies in what it opens up: direct access to Diani and the wider South Coast, one of Kenya's most celebrated beach regions. Warm turquoise water, an offshore coral reef and a laid-back tropical pace define the area, drawing visitors for swimming, diving and simply unwinding by the ocean. From Ukunda, the beaches, forests and marine reserves of the South Coast are all within easy reach."
+        },
+        "gallery": [
+          {
+            "alt": "Diani Beach's long stretch of white sand, palm trees and turquoise Indian Ocean water.",
+            "heading": "Diani Beach — Tropical Coastal Beauty",
+            "body": "Regularly ranked among Africa's finest beaches, Diani stretches for several kilometres along the South Coast with soft white sand and clear, reef-protected water. It draws a wide range of visitors, from families looking for calm swimming conditions to kite surfers taking advantage of steady coastal winds and divers exploring the offshore reef. Beachfront restaurants and bars line much of the shore, and boat excursions run regularly to nearby reefs, sandbanks and dolphin-watching spots further out."
+          },
+          {
+            "alt": "The Kaya Kinondo sacred forest near Diani, with dense indigenous vegetation and forest paths.",
+            "heading": "Kaya Kinondo — Sacred Coastal Heritage",
+            "body": "Tucked behind the beach resorts, Kaya Kinondo is one of the sacred kaya forests maintained by the Mijikenda communities of the Kenyan coast, recognised for both its ecological and cultural significance. These forests have served as sites of worship, burial and traditional governance for generations, and guided walks through Kaya Kinondo explain both the plant life within it and the beliefs that have kept it protected. It offers a quieter, more reflective counterpoint to the beach just a short distance away."
+          },
+          {
+            "alt": "An Angolan colobus monkey in coastal forest near Diani, or a conservation area in the South Coast forest.",
+            "heading": "Coastal Wildlife and Conservation",
+            "body": "The forest patches around Diani and Ukunda are home to the Angolan colobus monkey, a striking black-and-white primate that has become something of a local symbol, alongside vervet and Sykes' monkeys. Local conservation groups work to protect these fragmented forest habitats and reduce human-wildlife conflict, including through canopy bridges that let colobus troops move safely between forest patches over busy roads. It is a low-key but genuine wildlife encounter woven into the everyday landscape of the South Coast."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "malindi",
+      "name": "Malindi",
+      "country": "Kenya",
+      "airport_code": "MYD",
+      "hero_image": "/img/destinations/malindi-hero.jpg",
+      "gallery": [
+        "/img/destinations/malindi-gallery-1.jpg",
+        "/img/destinations/malindi-gallery-2.jpg",
+        "/img/destinations/malindi-gallery-3.jpg"
+      ],
+      "description": "A historic coastal town north of Mombasa with strong Swahili and Italian-Kenyan influence.",
+      "attractions": [
+        "Malindi Marine National Park",
+        "Vasco da Gama Pillar",
+        "Malindi Old Town"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Malindi's coastal waterfront with its Indian Ocean shoreline and historic town setting.",
+          "heading": "Malindi — Where Heritage Meets the Ocean",
+          "body": "One of the oldest continuously inhabited towns on the East African coast, Malindi has absorbed centuries of Swahili, Arab and, more recently, Italian influence into its identity. Its old town retains a strong Swahili character, while its beaches and offshore reefs have made it a long-standing draw for travellers seeking warm water and marine life. The result is a coastal town where deep history and easy beach living sit comfortably side by side."
+        },
+        "gallery": [
+          {
+            "alt": "Coral reef and clear water at Malindi Marine National Park, with snorkellers or a glass-bottom boat.",
+            "heading": "Malindi Marine Life and Water Activities",
+            "body": "Malindi Marine National Park, one of Kenya's oldest marine protected areas, safeguards a section of coral reef and shallow lagoon just offshore. Glass-bottom boat trips and snorkelling excursions reveal colourful coral formations and reef fish in the calm, clear water, while deeper reefs further out attract scuba divers. The park's establishment decades ago helped set an early precedent for marine conservation on the Kenyan coast, and its reefs remain a highlight for visitors today."
+          },
+          {
+            "alt": "The coral-stone ruins of the ancient Swahili city of Gedi, surrounded by dense forest vegetation.",
+            "heading": "Gedi Ruins — Echoes of a Lost Swahili City",
+            "body": "Hidden within coastal forest a short drive from Malindi, the Gedi Ruins are the remains of a once-thriving Swahili trading town, occupied from around the twelfth century until it was mysteriously abandoned in the seventeenth. Coral-stone walls, a mosque, a palace and tombs are still visible among the tree roots and forest canopy that have since grown over the site. Archaeological finds here, including imported porcelain and glassware, point to Gedi's role in Indian Ocean trade networks, and the site remains one of the most evocative historical stops on the coast."
+          },
+          {
+            "alt": "A sea turtle or Mida Creek at Watamu, near Malindi, showing mangroves and calm water.",
+            "heading": "Watamu — Marine Conservation and Wildlife",
+            "body": "A short distance south of Malindi, Watamu is known for its marine conservation work, particularly its long-running programme protecting nesting sea turtles along the beach. Mida Creek, a tidal inlet fringed by mangroves nearby, supports rich birdlife and is a popular spot for guided canoe or boat trips, with regular sightings of wading birds and, further out, dolphins in the bay. Together, Malindi and Watamu form one of the coast's stronger centres for marine wildlife encounters."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "eldoret",
+      "name": "Eldoret",
+      "country": "Kenya",
+      "airport_code": "EDL",
+      "hero_image": "/img/destinations/eldoret-hero.jpg",
+      "gallery": [
+        "/img/destinations/eldoret-gallery-1.jpg",
+        "/img/destinations/eldoret-gallery-2.jpg",
+        "/img/destinations/eldoret-gallery-3.jpg"
+      ],
+      "description": "A major town in Kenya's Rift Valley, known as a hub for the region's renowned distance runners.",
+      "attractions": [
+        "Kerio Valley viewpoints",
+        "Eldoret Sports Club",
+        "Rift Valley scenery"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Eldoret's town centre and skyline set against Kenya's western highlands.",
+          "heading": "Eldoret — The Highland City",
+          "body": "Sitting at an elevation of over 2,100 metres in Kenya's Rift Valley highlands, Eldoret has grown from a small farming settlement into one of the country's fastest-developing cities. Its cool climate and fertile surrounding land have made it a centre for agriculture and commerce, while its global reputation rests largely on something else entirely: it is the training base for many of Kenya's world-record-holding distance runners, earning it recognition as a genuine hub of athletics culture."
+        },
+        "gallery": [
+          {
+            "alt": "A dramatic view of the Rift Valley escarpment and highland landscape near Eldoret.",
+            "heading": "The Rift Valley Landscapes",
+            "body": "The country surrounding Eldoret forms part of Kenya's Great Rift Valley highlands, a landscape of rolling hills, dramatic escarpments and expansive views that shift with the region's changeable highland weather. Several viewpoints along the roads out of the city look out over the valley floor far below, and the cooler climate at altitude makes for pleasant conditions for outdoor exploration. It is a scenic, understated counterpoint to Kenya's better-known safari landscapes."
+          },
+          {
+            "alt": "Green agricultural fields and farmland in the highlands around Eldoret.",
+            "heading": "Eldoret's Agricultural Heritage",
+            "body": "The fertile volcanic soils and reliable rainfall of the highlands around Eldoret have made the region one of Kenya's most productive agricultural areas, particularly for maize and dairy farming. Rolling fields extend in every direction from the city, supporting a farming economy that has shaped both the local culture and the town's steady growth into a regional commercial hub. The patchwork of farmland is a defining feature of the surrounding countryside."
+          },
+          {
+            "alt": "A running track, training group or athletics-related scene reflecting Eldoret's identity as a distance-running hub.",
+            "heading": "A City of Sport and Opportunity",
+            "body": "Eldoret's high altitude and surrounding hill terrain have made it one of the world's most productive training grounds for elite distance runners, and the city has produced or hosted a remarkable share of Kenya's Olympic and world championship medallists. Training camps in the surrounding highlands draw athletes from across the country and abroad, and running is woven into everyday life here in a way that is unusual anywhere else. Alongside this athletics identity, Eldoret continues to grow as a broader commercial and educational centre for western Kenya."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "kitale",
+      "name": "Kitale",
+      "country": "Kenya",
+      "airport_code": "KTL",
+      "hero_image": "/img/destinations/kitale-hero.jpg",
+      "gallery": [
+        "/img/destinations/kitale-gallery-1.jpg",
+        "/img/destinations/kitale-gallery-2.jpg",
+        "/img/destinations/kitale-gallery-3.jpg"
+      ],
+      "description": "An agricultural town in western Kenya, a common base for visiting Mount Elgon and Saiwa Swamp.",
+      "attractions": [
+        "Mount Elgon National Park",
+        "Saiwa Swamp National Park",
+        "Kitale Museum"
+      ],
+      "media": {
+        "hero": {
+          "alt": "The green, fertile highland landscape around Kitale, with Mount Elgon visible in the distance.",
+          "heading": "Kitale — Gateway to the Western Highlands",
+          "body": "Set among some of Kenya's most fertile farmland, Kitale is a quiet agricultural town that also happens to sit at the doorstep of two exceptional natural areas: Mount Elgon and Saiwa Swamp. Its cooler highland climate and green surroundings offer a change of pace from Kenya's drier safari circuits, and the town itself retains a strong sense of rural western Kenyan life, with active markets and a well-regarded local museum."
+        },
+        "gallery": [
+          {
+            "alt": "Mount Elgon's forested slopes, caves or highland scenery near Kitale.",
+            "heading": "Mount Elgon — Forests, Caves and Mountain Scenery",
+            "body": "Straddling the Kenya-Uganda border, Mount Elgon is an enormous eroded volcano whose slopes rise through dense montane forest, bamboo zones and high-altitude moorland. Its network of caves, carved out partly by elephants seeking mineral salts over generations, are among its more unusual attractions, alongside waterfalls, hiking trails and populations of forest wildlife including buffalo and various primate species. For hikers, the mountain offers a multi-day trekking route up to its caldera, one of the largest in the world."
+          },
+          {
+            "alt": "Saiwa Swamp National Park's wetland habitat, with a wooden boardwalk through the forest.",
+            "heading": "Saiwa Swamp — A Rare Wetland Ecosystem",
+            "body": "One of Kenya's smallest national parks, Saiwa Swamp protects a rare wetland habitat that is the best place in the country to see the sitatunga, a shy, semi-aquatic antelope adapted to swamp life. Elevated wooden boardwalks and viewing towers let visitors observe the swamp and its birdlife, which includes a wide variety of forest and wetland species, without disturbing the fragile habitat. It is explored on foot rather than by vehicle, giving it a quieter, more intimate feel than Kenya's larger parks."
+          },
+          {
+            "alt": "Kitale Museum's exhibits or grounds, reflecting the town's cultural and natural history.",
+            "heading": "Kitale's History and Culture",
+            "body": "Kitale Museum offers a compact but informative introduction to the cultural and natural history of western Kenya, with exhibits covering local ethnography, traditional crafts and regional wildlife alongside botanical gardens on its grounds. The town around it remains firmly agricultural in character, with lively local markets trading in produce grown across the surrounding highlands. Together, the museum and town give visitors useful context before heading out to Mount Elgon or Saiwa Swamp."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "lamu",
+      "name": "Lamu",
+      "country": "Kenya",
+      "airport_code": "LAU",
+      "hero_image": "/img/destinations/lamu-hero.jpg",
+      "gallery": [
+        "/img/destinations/lamu-gallery-1.jpg",
+        "/img/destinations/lamu-gallery-2.jpg",
+        "/img/destinations/lamu-gallery-3.jpg"
+      ],
+      "description": "A UNESCO World Heritage island off Kenya's north coast, known for its Old Town and car-free streets.",
+      "attractions": [
+        "Lamu Old Town",
+        "Shela Beach",
+        "Dhow sailing trips"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Lamu Old Town's waterfront with traditional wooden dhows moored along the shore.",
+          "heading": "Lamu — A Living Swahili Heritage",
+          "body": "Lamu is Kenya's oldest continuously inhabited Swahili settlement and one of the best-preserved examples of Swahili culture anywhere on the East African coast. Cars are absent from its streets, replaced by donkeys and foot traffic, and daily life still moves to rhythms shaped by centuries of Indian Ocean trade, Islamic scholarship and craftsmanship. Its combination of intact architecture, living traditions and slow island pace has earned it recognition as a UNESCO World Heritage Site."
+        },
+        "gallery": [
+          {
+            "alt": "A narrow street in Lamu Old Town lined with coral-stone buildings and carved wooden doors.",
+            "heading": "Lamu Old Town — Architecture and Heritage",
+            "body": "Lamu Old Town's maze of narrow streets is lined with coral-stone buildings, many featuring elaborately carved wooden doors that reflect the wealth and status once held by the merchant families who built them. This architectural style, developed over centuries of Swahili, Arab and Indian influence, remains largely intact and continuously inhabited, which is a rarity on this scale anywhere in East Africa. Wandering the old town on foot, past mosques, courtyard houses and small workshops, is one of the defining experiences of a visit to Lamu."
+          },
+          {
+            "alt": "Shela Beach near Lamu, with pale sand dunes and open Indian Ocean coastline.",
+            "heading": "Shela Beach and the Indian Ocean",
+            "body": "A short walk or boat ride from Lamu Old Town, Shela village opens onto a long, largely undeveloped beach backed by high sand dunes. The wide stretch of open coastline is ideal for long walks, swimming and simply taking in views of the ocean and passing dhows, with a noticeably quieter atmosphere than the old town itself. Shela's own historic buildings and small guesthouses give it a character distinct from, but complementary to, Lamu town."
+          },
+          {
+            "alt": "A traditional wooden dhow with its sail raised, moving across the water near Lamu.",
+            "heading": "Dhow Sailing — Lamu's Maritime Tradition",
+            "body": "The dhow remains central to life in Lamu, much as it has been for centuries of Indian Ocean trade between the East African coast, the Arabian Peninsula and beyond. Traditional sailing boats, built and maintained using techniques passed down through generations of local craftsmen, still ferry goods and passengers around the archipelago today. For visitors, a sunset dhow sail is one of the most popular ways to experience Lamu's waters, combining the area's maritime heritage with simply enjoying the coastline from offshore."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "migori",
+      "name": "Migori",
+      "country": "Kenya",
+      "airport_code": "MGR",
+      "hero_image": "/img/destinations/migori-hero.jpg",
+      "gallery": [
+        "/img/destinations/migori-gallery-1.jpg",
+        "/img/destinations/migori-gallery-2.jpg",
+        "/img/destinations/migori-gallery-3.jpg"
+      ],
+      "description": "A town in southwestern Kenya near the Tanzanian border, a gateway to the Maasai Mara's western routes.",
+      "attractions": [
+        "Maasai Mara western access",
+        "Lake Victoria basin scenery",
+        "Local markets"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Migori town and the green landscape of southwestern Kenya near the Tanzanian border.",
+          "heading": "Migori — Gateway to Western Kenya",
+          "body": "Located in Kenya's southwest near the Tanzanian border, Migori is a growing regional town set within the green, well-watered landscape typical of the Lake Victoria basin. It functions primarily as a commercial and agricultural centre for the surrounding area, with cross-border trade adding to its steady activity. For travellers, it also serves as a practical access point toward the western routes into the Maasai Mara and the wider Lake Victoria region."
+        },
+        "gallery": [
+          {
+            "alt": "A busy local market in Migori with traders selling produce and goods.",
+            "heading": "Local Markets and Community Life",
+            "body": "Migori's markets are the heartbeat of the town, drawing traders and shoppers from across the surrounding farming communities to buy and sell produce, textiles and household goods. The steady flow of cross-border trade with neighbouring Tanzania adds an extra layer of activity, with goods and languages mixing in the stalls. For visitors, the markets offer a genuine, unfiltered look at everyday commerce and community life in this part of western Kenya."
+          },
+          {
+            "alt": "The Lake Victoria basin near Migori, with lakeshore scenery or fishing activity.",
+            "heading": "The Lake Victoria Region",
+            "body": "Migori sits within the wider Lake Victoria basin, a region whose economy and culture have long been shaped by Africa's largest lake. Fishing communities along the shoreline further north continue traditions built around the lake's waters, and the basin's fertile, well-watered land supports agriculture across the region. The lake itself, along with its scenery and fishing culture, remains one of the defining features of this part of Kenya."
+          },
+          {
+            "alt": "Rural farmland and green countryside typical of the western Kenya landscape around Migori.",
+            "heading": "The Green Countryside",
+            "body": "The countryside around Migori is markedly greener and more agricultural than much of Kenya, reflecting the reliable rainfall of the Lake Victoria basin. Small farms growing maize, sugarcane and other staple crops extend across the rolling landscape, supporting rural communities throughout the region. It is an understated but genuine slice of western Kenyan life, offering a contrast to the country's more heavily visited safari and coastal regions."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "nairobi",
+      "name": "Nairobi",
+      "country": "Kenya",
+      "airport_code": "WIL",
+      "hero_image": "/img/destinations/nairobi-hero.jpg",
+      "gallery": [
+        "/img/destinations/nairobi-gallery-1.jpg",
+        "/img/destinations/nairobi-gallery-2.jpg",
+        "/img/destinations/nairobi-gallery-3.jpg"
+      ],
+      "description": "Kenya's capital and our network hub, known as the 'Green City in the Sun'.",
+      "attractions": [
+        "David Sheldrick Wildlife Trust",
+        "Nairobi National Park",
+        "Giraffe Centre",
+        "Karen Blixen Museum"
+      ],
+      "media": {
+        "hero": {
+          "alt": "The Nairobi skyline with its cluster of modern high-rise buildings.",
+          "heading": "Nairobi — Kenya's Dynamic Capital",
+          "body": "As Kenya's capital and largest city, Nairobi serves as the country's political, commercial and cultural centre, and for most travellers, its main gateway to the rest of East Africa. Modern high-rises sit alongside green parks and leafy suburbs, and the city's nickname, the \"Green City in the Sun,\" reflects a genuinely verdant character that is unusual for a capital of its size. It is also, unusually for a major city, home to a full national park and several notable wildlife conservation centres within its boundaries."
+        },
+        "gallery": [
+          {
+            "alt": "Wildlife such as lion, giraffe or zebra in Nairobi National Park, with the city skyline visible in the background.",
+            "heading": "Nairobi National Park — Wildlife Beside the City",
+            "body": "Nairobi National Park is one of the few places in the world where visitors can see lion, giraffe, zebra and rhino with a city skyline as the backdrop. Established in 1946, it protects open savannah just a few kilometres from the city centre, offering a genuine safari experience without the long travel times required by Kenya's more remote reserves. The park is also an important sanctuary for black rhino, part of a long-running conservation effort to protect the species."
+          },
+          {
+            "alt": "A Rothschild's giraffe at the Giraffe Centre in Nairobi, being fed by a visitor at eye level.",
+            "heading": "Giraffe Centre — Conservation and Wildlife",
+            "body": "The Giraffe Centre was established to protect the endangered Rothschild's giraffe through a breeding and conservation programme, and it has since become one of Nairobi's most popular visitor attractions. An elevated viewing platform lets guests feed and observe the giraffes at close range, while on-site displays explain the species' decline and the conservation efforts working to reverse it. It is a hands-on introduction to wildlife conservation that appeals equally to families and first-time visitors to Kenya."
+          },
+          {
+            "alt": "Orphaned elephant calves being cared for at an elephant conservation and rescue centre in Nairobi.",
+            "heading": "Elephant Conservation in Nairobi",
+            "body": "Nairobi is home to well-known elephant conservation work centred on the rescue and rehabilitation of orphaned elephant calves, many of whom have lost their mothers to poaching, drought or human-wildlife conflict. Hand-reared by dedicated keepers, the young elephants are gradually prepared for eventual release back into the wild in Kenya's national parks. Public visits offer a close look at this long-term conservation process and the broader challenges facing Kenya's elephant populations."
+          }
+        ]
+      }
+    },
+    {
+      "slug": "kisumu",
+      "name": "Kisumu",
+      "country": "Kenya",
+      "airport_code": "KIS",
+      "hero_image": "/img/destinations/kisumu-hero.jpg",
+      "gallery": [
+        "/img/destinations/kisumu-gallery-1.jpg",
+        "/img/destinations/kisumu-gallery-2.jpg",
+        "/img/destinations/kisumu-gallery-3.jpg"
+      ],
+      "description": "Kenya's third-largest city, on the shores of Lake Victoria in western Kenya.",
+      "attractions": [
+        "Kisumu Impala Sanctuary",
+        "Lake Victoria boat trips",
+        "Kit Mikayi rock formation"
+      ],
+      "media": {
+        "hero": {
+          "alt": "Kisumu's waterfront and city panorama along the shore of Lake Victoria.",
+          "heading": "Kisumu — Life on the Shores of Lake Victoria",
+          "body": "Kenya's third-largest city sits directly on the shores of Lake Victoria, Africa's largest lake, and that setting defines much of its character. Kisumu has long served as a trading and transport hub for western Kenya, with a waterfront scene shaped by fishing boats, lakeside markets and a noticeably relaxed pace compared to Nairobi. It is also the natural base for exploring the wider Lake Victoria region and several distinctive nearby attractions."
+        },
+        "gallery": [
+          {
+            "alt": "Lake Victoria at Kisumu with fishing boats on the water and a view toward the horizon, possibly at sunset.",
+            "heading": "Lake Victoria — The Heart of Kisumu",
+            "body": "Lake Victoria, the largest lake in Africa and a defining feature of the region, dominates life in Kisumu in ways both practical and scenic. Fishing remains central to the local economy, with wooden boats heading out each morning and returning with the day's catch to busy lakeside markets. Boat trips on the lake are a popular way to take in the scenery, particularly around sunset, when the water and sky take on rich colour over the wide open horizon."
+          },
+          {
+            "alt": "Wildlife such as impala at the Kisumu Impala Sanctuary, with Lake Victoria in the background.",
+            "heading": "Kisumu Impala Sanctuary — Wildlife by the Lake",
+            "body": "Set on a peninsula jutting into Lake Victoria, the Kisumu Impala Sanctuary combines a small wildlife reserve with genuine lakeside scenery. Impala, giraffe and various primate species can be seen along its walking and driving trails, with the lake visible through the trees for much of the route. Its compact size and lakeside setting make it an easy, low-key wildlife stop for visitors based in Kisumu."
+          },
+          {
+            "alt": "The Kit Mikayi rock formation near Kisumu, a large balanced granite outcrop in the western Kenyan landscape.",
+            "heading": "Kit Mikayi — A Place of Cultural Significance",
+            "body": "A short drive from Kisumu, Kit Mikayi is a striking natural rock formation held in deep cultural significance by the local Luo community, with an origin story and set of traditional beliefs tied to the site passed down through generations. Its unusual balanced granite outcrops rise dramatically from the surrounding landscape, making it a notable stop for both its visual impact and its cultural depth. Local guides at the site can explain the folklore and traditions associated with it in more detail."
+          }
+        ]
+      }
+    }
+  ],
+  "deals": [
+    {
+      "id": "deal-1",
+      "title": "Nairobi to Mombasa Getaway",
+      "destination_slug": "mombasa",
+      "old_price": 8500,
+      "current_price": 6500,
+      "discount_pct": 24,
+      "travel_window": "Now through end of next month",
+      "booking_window": "Book within 14 days",
+      "active": true
+    },
+    {
+      "id": "deal-2",
+      "title": "Lamu Old Town Escape",
+      "destination_slug": "lamu",
+      "old_price": 12500,
+      "current_price": 10000,
+      "discount_pct": 20,
+      "travel_window": "Weekday departures only",
+      "booking_window": "Limited seats",
+      "active": true
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-1",
+      "category": "BOOKING",
+      "question": "How do I book a flight?",
+      "answer": "Use the flight search on the homepage, choose your flight and fare, enter passenger details, and review your fare breakdown before confirming."
+    },
+    {
+      "id": "faq-2",
+      "category": "BAGGAGE",
+      "question": "What is the baggage allowance?",
+      "answer": "Standard fares include one checked bag and one cabin bag. Extra baggage can be added during booking for a flat fee."
+    },
+    {
+      "id": "faq-3",
+      "category": "MANAGE BOOKING",
+      "question": "How do I find my booking?",
+      "answer": "Go to Manage Booking and enter your booking reference along with the surname on the booking."
+    },
+    {
+      "id": "faq-4",
+      "category": "PAYMENT",
+      "question": "How do I pay for my booking?",
+      "answer": "After confirming your booking, use the WhatsApp Pay button to send your booking details and total to our payments team. Your booking reference and fare breakdown are included automatically."
+    },
+    {
+      "id": "faq-5",
+      "category": "PAYMENT",
+      "question": "Is my booking paid as soon as I message on WhatsApp?",
+      "answer": "No. Opening WhatsApp does not mark your booking as paid. Payment status only changes once our team confirms your payment."
+    },
+    {
+      "id": "faq-6",
+      "category": "CHECK-IN",
+      "question": "When does check-in open?",
+      "answer": "Online check-in opens 24 hours before scheduled departure and closes 45 minutes prior for domestic flights and 2 hours prior for the Dar es Salaam service."
+    },
+    {
+      "id": "faq-7",
+      "category": "FLIGHTS",
+      "question": "What fare types are available?",
+      "answer": "Adult, child and infant fares are available on all routes. Child fares apply a discount off the adult base fare; infant (lap) fares apply a larger discount."
+    }
+  ]
+}
